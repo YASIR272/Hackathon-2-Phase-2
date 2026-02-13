@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 47.4% 11.2%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 47.4% 11.2%;
+    --primary: 252 84% 44%; /* Vibrant indigo-purple */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --accent: 260 70% 85%; /* Soft purple accent */
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84% 60%; /* Vibrant red */
+    --destructive-foreground: 0 0% 100%;
+    --ring: 252 84% 44%; /* Match primary color */
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 224 71% 4%;
+    --foreground: 213 31% 91%;
+    --muted: 223 47% 11%;
+    --muted-foreground: 215.4 16.3% 56.9%;
+    --popover: 224 71% 4%;
+    --popover-foreground: 215 20.2% 65.1%;
+    --border: 216 34% 17%;
+    --input: 216 34% 17%;
+    --card: 224 71% 4%;
+    --card-foreground: 213 31% 91%;
+    --primary: 252 84% 60%; /* Lighter vibrant indigo-purple for dark mode */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 222.2 47.4% 11.2%;
+    --secondary-foreground: 210 40% 98%;
+    --accent: 260 50% 25%; /* Darker purple accent */
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 70% 50%; /* Vibrant red for dark mode */
+    --destructive-foreground: 0 0% 100%;
+    --ring: 252 84% 60%; /* Match primary color for dark mode */
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Add subtle gradient backgrounds and enhanced styling */
+@layer utilities {
+  .bg-gradient-primary {
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(280, 84%, 54%));
+  }
+  .bg-gradient-accent {
+    background: linear-gradient(135deg, hsl(var(--accent)), hsl(240, 70%, 65%));
+  }
+  .shadow-vibrant {
+    box-shadow: 0 4px 20px -4px rgba(139, 92, 246, 0.2), 0 4px 8px -4px rgba(0, 0, 0, 0.1);
+  }
+  .transition-all {
+    transition: all 0.3s ease;
+  }
+}

@@ -1,0 +1,17 @@
+For Backend: 
+ab main backend banane wala hun mere hackathon ki document already tmhare pas hai ab mjhe backend k liya sp.specify ki prompt likh kr do or complete likh kar dena take full backend bane or integrate b hojaye frontned ke 7 successfully or yeh meri .env ki file hai 
+
+BETTER_AUTH_SECRET=NX83Ogb4FAGFppGPnkjbDP1iykJ6NPSH
+DATABASE_URL=file:./db.sqlite
+Neon_db_url= postgresql://neondb_owner:npg_vbGNx8Ppi1XL@ep-still-paper-a1jkrkvc-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+
+
+ab mjhe sp.specify ki prompt bana kar do full details k 7  
+
+# .env example file:
+# NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
+# NEXTAUTH_URL=http://localhost:3000
+# NEXTAUTH_SECRET=your-nextauth-secret
+# BETTER_AUTH_SECRET=your-better-auth-secret
+
+ab meri sp.specify ki prompt successfully run hogyi hai ab mjhe sp.plan ki prompt likh kar do detail me

@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git fetch:*)",
+      "Bash(git checkout:*)",
+      "Bash(git add:*)",
+      "Bash(powershell -ExecutionPolicy Bypass -File \".specify/scripts/powershell/setup-plan.ps1\" -Json)",
+      "Bash(dir:*)",
+      "Bash(powershell -ExecutionPolicy Bypass -File scripts/powershell/check-prerequisites.ps1 -Json -RequireTasks -IncludeTasks:*)",
+      "Bash(powershell -ExecutionPolicy Bypass -File:*)",
+      "Bash(TOKEN=\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ0ZXN0LXVzZXItMTIzIiwic3ViIjoidGVzdC11c2VyLTEyMyIsImV4cCI6MTc3MDk1NDIwNH0.leS4FLYBHOBUHP7UjuPBw2muhwFB6AD1EuBQL8Vy05I\")",
+      "Bash(__NEW_LINE_f41d44e637860084__ echo \"=== Toggle task 1 as complete ===\")",
+      "Bash(curl -s -X PATCH -H \"Authorization: Bearer $TOKEN\" -H \"Content-Type: application/json\" -d '{\"\"completed\"\": true}' http://localhost:8000/api/test-user-123/tasks/1/complete)",
+      "Bash(__NEW_LINE_f41d44e637860084__ echo \"\")",
+      "Bash(curl:*)",
+      "Bash(curl -s -H \"Authorization: Bearer $TOKEN\" http://localhost:8000/api/test-user-123/tasks/2)",
+      "Bash(npm run dev:*)",
+      "Bash(del \"E:\\\\Hackathon 2 Complete\\\\Hackathon 2 Phase II Full-Stack Web Application\\\\backend\\\\todo.db\")"
+    ]
+  }
+}
