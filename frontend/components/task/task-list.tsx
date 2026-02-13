@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Plus, RefreshCw } from 'lucide-react';
 import { apiClient } from '@/lib/api';
 import { useToast } from '@/hooks/use-toast';
-import { useSession } from '@/lib/auth-client';
+import { useAuth } from '@/lib/simple-auth';
 
 export function TaskList() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -19,19 +19,17 @@ export function TaskList() {
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [filter, setFilter] = useState<TaskFilterStatus>('all');
   const { toast } = useToast();
-  const { data: session } = useSession();
+  const { user } = useAuth();
 
   useEffect(() => {
-    // Set up auth credentials when session is available
-    if (session?.user) {
-      // Generate a simple token for API calls (in production, use proper JWT from auth)
-      const userId = session.user.id;
-      // For demo purposes, create a simple base64 encoded token
+    // Set up auth credentials when user is available
+    if (user) {
+      const userId = user.id;
       const token = btoa(JSON.stringify({ userId, sub: userId, exp: Date.now() + 86400000 }));
       apiClient.setCredentials(userId, token);
     }
     fetchTasks();
-  }, [session]);
+  }, [user]);
 
   const fetchTasks = async () => {
     setLoading(true);
