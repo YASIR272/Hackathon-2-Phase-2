@@ -12,7 +12,7 @@ import { Plus, RefreshCw, PanelRightClose, PanelRight } from 'lucide-react';
 import { Task, TaskFilterStatus, Priority } from '@/types';
 import { apiClient } from '@/lib/api';
 import { useToast } from '@/hooks/use-toast';
-import { useSession } from '@/lib/auth-client';
+import { useAuth } from '@/lib/simple-auth';
 
 export default function DashboardPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -23,16 +23,16 @@ export default function DashboardPage() {
   const [showSidebar, setShowSidebar] = useState(true);
   const [selectedTaskId, setSelectedTaskId] = useState<number | null>(null);
   const { toast } = useToast();
-  const { data: session } = useSession();
+  const { user } = useAuth();
 
   useEffect(() => {
-    if (session?.user) {
-      const userId = session.user.id;
+    if (user) {
+      const userId = user.id;
       const token = btoa(JSON.stringify({ userId, sub: userId, exp: Date.now() + 86400000 }));
       apiClient.setCredentials(userId, token);
     }
     fetchTasks();
-  }, [session]);
+  }, [user]);
 
   const fetchTasks = async () => {
     setLoading(true);

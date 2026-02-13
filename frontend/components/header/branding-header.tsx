@@ -3,15 +3,14 @@
 import Link from 'next/link';
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
-import { useSession } from '@/lib/auth-client';
+import { useAuth } from '@/lib/simple-auth';
 import { useState, useEffect } from 'react';
 
 import { Button } from '@/components/ui/button';
-import { signOut } from '@/lib/auth-client';
 
 export function BrandingHeader() {
   const { theme, setTheme, resolvedTheme } = useTheme();
-  const { data: session, isLoading } = useSession();
+  const { user, signOut } = useAuth();
   const [mounted, setMounted] = useState(false);
 
   // Avoid hydration mismatch by only rendering theme toggle after mount
@@ -20,7 +19,7 @@ export function BrandingHeader() {
   }, []);
 
   const handleSignOut = async () => {
-    await signOut();
+    signOut();
     window.location.href = '/';
   };
 
@@ -39,9 +38,9 @@ export function BrandingHeader() {
           </Link>
         </div>
         <div className="flex items-center gap-2">
-          {session?.user && (
+          {user && (
             <span className="hidden md:block text-sm font-medium mr-4">
-              Welcome, {session.user.name || session.user.email}
+              Welcome, {user.name || user.email}
             </span>
           )}
           {mounted && (
@@ -58,7 +57,7 @@ export function BrandingHeader() {
               )}
             </Button>
           )}
-          {session?.user && (
+          {user && (
             <Button
               variant="outline"
               size="sm"
