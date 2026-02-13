@@ -1,12 +1,12 @@
 'use client';
 
 import { ReactNode } from 'react';
-import { auth } from '@/lib/auth';
+import { AuthProvider as SimpleAuthProvider } from '@/lib/simple-auth';
 
 interface AuthProviderProps {
   children: ReactNode;
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  return <auth.Provider>{children}</auth.Provider>;
+  return <SimpleAuthProvider>{children}</SimpleAuthProvider>;
 }
