@@ -60,10 +60,13 @@ build/
 *.swp
 *.swo
 
-# Compiled JavaScript
-*.js
-*.mjs
-*.cjs
+# Compiled JavaScript (keep config files)
+# *.js
+# *.mjs
+# *.cjs
+!next.config.js
+!postcss.config.js
+!tailwind.config.js
 
 # Secrets
 secrets/
