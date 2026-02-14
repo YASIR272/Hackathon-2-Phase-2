@@ -19,6 +19,17 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// Generate a deterministic unique ID from email so each user gets their own dashboard
+function generateUserId(email: string): string {
+  let hash = 0;
+  for (let i = 0; i < email.length; i++) {
+    const char = email.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convert to 32bit integer
+  }
+  return 'user-' + Math.abs(hash).toString(36);
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -40,10 +51,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Simulate API call
     return new Promise((resolve) => {
       setTimeout(() => {
-        // Mock successful sign in
+        // Mock successful sign in - unique ID per email
         const mockUser: User = {
-          id: '1',
-          name: email.split('@')[0], // Use email prefix as name
+          id: generateUserId(email),
+          name: email.split('@')[0],
           email: email
         };
         setUser(mockUser);
@@ -57,9 +68,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Simulate API call
     return new Promise((resolve) => {
       setTimeout(() => {
-        // Mock successful sign up
+        // Mock successful sign up - unique ID per email
         const mockUser: User = {
-          id: '1',
+          id: generateUserId(email),
           name: name,
           email: email
         };
