@@ -20,9 +20,7 @@ async def lifespan(app: FastAPI):
     Lifespan event handler to initialize the database
     """
     logger.info("Initializing database...")
-    # Drop and recreate tables to apply schema changes (development only)
-    # In production, use proper migrations with Alembic
-    SQLModel.metadata.drop_all(bind=engine)
+    # Create tables if they don't exist (keeps existing data)
     SQLModel.metadata.create_all(bind=engine)
     logger.info("Database initialized successfully")
     yield
