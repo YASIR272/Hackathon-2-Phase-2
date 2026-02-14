@@ -43,7 +43,7 @@ def verify_token(credentials: Optional[HTTPAuthorizationCredentials] = Depends(s
             detail="Token has expired",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    except jwt.JWTError:
+    except (jwt.PyJWTError, Exception):
         # Try base64 decode for demo tokens
         try:
             decoded = base64.b64decode(token).decode('utf-8')
@@ -57,12 +57,6 @@ def verify_token(credentials: Optional[HTTPAuthorizationCredentials] = Depends(s
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Could not validate credentials",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail=f"Authentication error: {str(e)}",
             headers={"WWW-Authenticate": "Bearer"},
         )
 

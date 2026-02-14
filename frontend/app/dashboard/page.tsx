@@ -109,10 +109,24 @@ export default function DashboardPage() {
     if (selectedTaskId === id) {
       setSelectedTaskId(null);
     }
-    toast({
-      title: 'Task deleted',
-      description: taskToDelete?.title || 'Task has been removed',
-    });
+
+    try {
+      await apiClient.delete(`/api/{user_id}/tasks/${id}`);
+      toast({
+        title: 'Task deleted',
+        description: taskToDelete?.title || 'Task has been removed',
+      });
+    } catch (error) {
+      // Restore task on failure
+      if (taskToDelete) {
+        setTasks(prev => [...prev, taskToDelete]);
+      }
+      toast({
+        title: 'Error',
+        description: 'Failed to delete task',
+        variant: 'destructive',
+      });
+    }
   };
 
   const handleSubmitSuccess = () => {
