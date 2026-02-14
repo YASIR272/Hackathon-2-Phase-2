@@ -1,5 +1,5 @@
 // API Client with Better Auth integration
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
+const API_BASE_URL = 'https://yasirali22218-hackathon-ii-phase-ii.hf.space';
 
 class ApiClient {
   private baseUrl: string;
