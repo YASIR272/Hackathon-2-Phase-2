@@ -1,0 +1,195 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MCP Task Tools - Parameter and Response Schemas",
+  "description": "JSON Schema definitions for the 5 MCP tools in the Todo Chatbot",
+  "tools": [
+    {
+      "name": "add_task",
+      "description": "Create a new task for the user's todo list. Use when the user wants to add, create, or remember something.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "description": "The authenticated user's unique identifier"
+          },
+          "title": {
+            "type": "string",
+            "description": "The task title (what needs to be done)",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "description": {
+            "type": "string",
+            "description": "Optional additional details about the task",
+            "maxLength": 1000
+          }
+        },
+        "required": ["user_id", "title"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "task_id": { "type": "integer" },
+          "status": { "type": "string", "enum": ["created"] },
+          "title": { "type": "string" }
+        },
+        "required": ["task_id", "status", "title"]
+      },
+      "examples": {
+        "input": { "user_id": "ziakhan", "title": "Buy groceries", "description": "Milk, eggs, bread" },
+        "output": { "task_id": 5, "status": "created", "title": "Buy groceries" }
+      }
+    },
+    {
+      "name": "list_tasks",
+      "description": "Retrieve tasks from the user's todo list. Use when the user asks to see, show, or list their tasks.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "description": "The authenticated user's unique identifier"
+          },
+          "status": {
+            "type": "string",
+            "description": "Filter tasks by status: 'all' (default), 'pending', or 'completed'",
+            "enum": ["all", "pending", "completed"],
+            "default": "all"
+          }
+        },
+        "required": ["user_id"]
+      },
+      "outputSchema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "integer" },
+            "title": { "type": "string" },
+            "completed": { "type": "boolean" }
+          },
+          "required": ["id", "title", "completed"]
+        }
+      },
+      "examples": {
+        "input": { "user_id": "ziakhan", "status": "pending" },
+        "output": [{ "id": 1, "title": "Buy groceries", "completed": false }]
+      }
+    },
+    {
+      "name": "complete_task",
+      "description": "Mark a task as complete. Use when the user says done, complete, or finished with a task.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "description": "The authenticated user's unique identifier"
+          },
+          "task_id": {
+            "type": "integer",
+            "description": "The ID of the task to mark as complete"
+          }
+        },
+        "required": ["user_id", "task_id"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "task_id": { "type": "integer" },
+          "status": { "type": "string", "enum": ["completed"] },
+          "title": { "type": "string" }
+        },
+        "required": ["task_id", "status", "title"]
+      },
+      "examples": {
+        "input": { "user_id": "ziakhan", "task_id": 3 },
+        "output": { "task_id": 3, "status": "completed", "title": "Call mom" }
+      }
+    },
+    {
+      "name": "delete_task",
+      "description": "Remove a task from the user's todo list. Use when the user says delete, remove, or cancel a task.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "description": "The authenticated user's unique identifier"
+          },
+          "task_id": {
+            "type": "integer",
+            "description": "The ID of the task to delete"
+          }
+        },
+        "required": ["user_id", "task_id"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "task_id": { "type": "integer" },
+          "status": { "type": "string", "enum": ["deleted"] },
+          "title": { "type": "string" }
+        },
+        "required": ["task_id", "status", "title"]
+      },
+      "examples": {
+        "input": { "user_id": "ziakhan", "task_id": 2 },
+        "output": { "task_id": 2, "status": "deleted", "title": "Old task" }
+      }
+    },
+    {
+      "name": "update_task",
+      "description": "Modify a task's title or description. Use when the user says change, update, rename, or edit a task.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "description": "The authenticated user's unique identifier"
+          },
+          "task_id": {
+            "type": "integer",
+            "description": "The ID of the task to update"
+          },
+          "title": {
+            "type": "string",
+            "description": "New title for the task (optional if description is provided)",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "description": {
+            "type": "string",
+            "description": "New description for the task (optional if title is provided)",
+            "maxLength": 1000
+          }
+        },
+        "required": ["user_id", "task_id"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "task_id": { "type": "integer" },
+          "status": { "type": "string", "enum": ["updated"] },
+          "title": { "type": "string" }
+        },
+        "required": ["task_id", "status", "title"]
+      },
+      "examples": {
+        "input": { "user_id": "ziakhan", "task_id": 1, "title": "Buy groceries and fruits" },
+        "output": { "task_id": 1, "status": "updated", "title": "Buy groceries and fruits" }
+      }
+    }
+  ],
+  "errorSchema": {
+    "type": "object",
+    "properties": {
+      "error": {
+        "type": "string",
+        "description": "Human-readable error message"
+      }
+    },
+    "required": ["error"]
+  }
+}
