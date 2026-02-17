@@ -15,7 +15,12 @@
       "Bash(curl:*)",
       "Bash(curl -s -H \"Authorization: Bearer $TOKEN\" http://localhost:8000/api/test-user-123/tasks/2)",
       "Bash(npm run dev:*)",
-      "Bash(del \"E:\\\\Hackathon 2 Complete\\\\Hackathon 2 Phase II Full-Stack Web Application\\\\backend\\\\todo.db\")"
+      "Bash(del \"E:\\\\Hackathon 2 Complete\\\\Hackathon 2 Phase II Full-Stack Web Application\\\\backend\\\\todo.db\")",
+      "WebFetch(domain:yasirali22218-hackathon-ii-phase-ii.hf.space)",
+      "WebFetch(domain:hackathon-2-phase-2-lyart.vercel.app)",
+      "Bash(venv/Scripts/pip.exe:*)",
+      "Bash(venv/Scripts/python.exe -m pip install:*)",
+      "Bash(netstat:*)"
     ]
   }
 }

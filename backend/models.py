@@ -1,5 +1,5 @@
 from sqlmodel import SQLModel, Field
-from sqlalchemy import Column, DateTime, Index, text
+from sqlalchemy import Column, DateTime, Index, text, String, Text
 from datetime import datetime
 from typing import Optional
 from enum import Enum
@@ -72,3 +72,39 @@ class TaskUpdate(SQLModel):
 class TaskToggleComplete(SQLModel):
     """Schema for toggling task completion status"""
     completed: bool
+
+
+class Conversation(SQLModel, table=True):
+    """Conversation model for database table"""
+    id: Optional[int] = Field(default=None, primary_key=True)
+    user_id: str = Field(sa_column_kwargs={"index": True})  # Index for efficient user-based queries
+    created_at: datetime = Field(
+        sa_column=Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
+    )
+    updated_at: datetime = Field(
+        sa_column=Column(DateTime, nullable=False,
+                         server_default=text("CURRENT_TIMESTAMP"),
+                         onupdate=datetime.utcnow)
+    )
+
+    # Indexes for efficient querying
+    __table_args__ = (
+        Index('idx_conversation_user_id', 'user_id'),  # Index on user_id for efficient user queries
+    )
+
+
+class Message(SQLModel, table=True):
+    """Message model for database table"""
+    id: Optional[int] = Field(default=None, primary_key=True)
+    user_id: str = Field(sa_column_kwargs={"index": True})  # Index for efficient user-based queries
+    conversation_id: int = Field(foreign_key="conversation.id")  # Foreign Key to Conversation.id
+    role: str = Field(max_length=20)  # "user" or "assistant"
+    content: str = Field(sa_column=Column(Text, nullable=False))  # Text column for message content
+    created_at: datetime = Field(
+        sa_column=Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
+    )
+
+    # Indexes for efficient querying
+    __table_args__ = (
+        Index('idx_message_user_id', 'user_id'),  # Index on user_id for efficient user queries
+    )

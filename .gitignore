@@ -140,3 +140,12 @@ backend/__pycache__/
 backend/*.db
 backend/.env
 backend/venv/
+backend/node_modules/
+
+# Accidental pip artifacts
+=1.0.0
+backend/=1.0.0
+
+# ChatKit frontend
+chatkit-frontend/node_modules/
+chatkit-frontend/dist/

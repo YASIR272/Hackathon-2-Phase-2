@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Chat API Contract",
+  "description": "JSON Schema for the POST /api/{user_id}/chat endpoint",
+  "endpoint": {
+    "method": "POST",
+    "path": "/api/{user_id}/chat",
+    "auth": "Bearer JWT token required",
+    "pathParams": {
+      "user_id": {
+        "type": "string",
+        "description": "Authenticated user's ID (must match JWT)"
+      }
+    }
+  },
+  "requestSchema": {
+    "type": "object",
+    "properties": {
+      "message": {
+        "type": "string",
+        "description": "The user's natural language message",
+        "minLength": 1
+      },
+      "conversation_id": {
+        "type": "integer",
+        "description": "Existing conversation ID to continue. Creates new if omitted.",
+        "nullable": true
+      }
+    },
+    "required": ["message"]
+  },
+  "responseSchema": {
+    "type": "object",
+    "properties": {
+      "conversation_id": {
+        "type": "integer",
+        "description": "The conversation ID (new or existing)"
+      },
+      "response": {
+        "type": "string",
+        "description": "The AI assistant's text response"
+      },
+      "tool_calls": {
+        "type": "array",
+        "description": "List of MCP tools invoked during processing",
+        "items": {
+          "type": "object",
+          "properties": {
+            "tool_name": {
+              "type": "string",
+              "description": "Name of the MCP tool called"
+            },
+            "arguments": {
+              "type": "object",
+              "description": "Arguments passed to the tool"
+            },
+            "result": {
+              "type": "string",
+              "description": "Tool's return value (JSON string)"
+            }
+          },
+          "required": ["tool_name", "arguments", "result"]
+        }
+      }
+    },
+    "required": ["conversation_id", "response", "tool_calls"]
+  },
+  "errorSchema": {
+    "type": "object",
+    "properties": {
+      "detail": {
+        "type": "string",
+        "description": "Human-readable error message"
+      }
+    },
+    "required": ["detail"]
+  },
+  "examples": {
+    "newConversation": {
+      "request": {
+        "message": "Add a task to buy groceries"
+      },
+      "response": {
+        "conversation_id": 1,
+        "response": "I've added 'Buy groceries' to your task list!",
+        "tool_calls": [
+          {
+            "tool_name": "add_task",
+            "arguments": {"user_id": "alice", "title": "Buy groceries"},
+            "result": "{\"task_id\": 5, \"status\": \"created\", \"title\": \"Buy groceries\"}"
+          }
+        ]
+      }
+    },
+    "continueConversation": {
+      "request": {
+        "message": "Show me all my tasks",
+        "conversation_id": 1
+      },
+      "response": {
+        "conversation_id": 1,
+        "response": "Here are your tasks:\n1. Buy groceries (pending)\n2. Call mom (completed)",
+        "tool_calls": [
+          {
+            "tool_name": "list_tasks",
+            "arguments": {"user_id": "alice", "status": "all"},
+            "result": "[{\"id\": 5, \"title\": \"Buy groceries\", \"completed\": false}]"
+          }
+        ]
+      }
+    },
+    "validationError": {
+      "request": {
+        "message": ""
+      },
+      "response": {
+        "detail": "Message cannot be empty"
+      }
+    }
+  }
+}

@@ -35,6 +35,15 @@ def verify_token(credentials: Optional[HTTPAuthorizationCredentials] = Depends(s
 
         # Extract user_id from the token
         user_id = payload.get("userId") or payload.get("sub") or payload.get("id")
+
+        # Validate that extracted user_id is not empty string or None
+        if not user_id or user_id.strip() == "":
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid user identity",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+
         return user_id
 
     except jwt.ExpiredSignatureError:
@@ -50,6 +59,13 @@ def verify_token(credentials: Optional[HTTPAuthorizationCredentials] = Depends(s
             payload = json.loads(decoded)
             user_id = payload.get("userId") or payload.get("sub") or payload.get("id")
             if user_id:
+                # Validate that extracted user_id is not empty string or None
+                if not user_id or user_id.strip() == "":
+                    raise HTTPException(
+                        status_code=status.HTTP_401_UNAUTHORIZED,
+                        detail="Invalid user identity",
+                        headers={"WWW-Authenticate": "Bearer"},
+                    )
                 return user_id
         except Exception:
             pass

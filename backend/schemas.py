@@ -94,3 +94,22 @@ class ToggleCompleteResponse(BaseModel):
     id: int
     completed: bool
     updated_at: datetime
+
+
+# --- Chat Schemas (Feature 005) ---
+
+class ChatRequest(BaseModel):
+    message: str
+    conversation_id: Optional[int] = None
+
+
+class ToolCallInfo(BaseModel):
+    tool_name: str
+    arguments: dict
+    result: str
+
+
+class ChatResponse(BaseModel):
+    conversation_id: int
+    response: str
+    tool_calls: List[ToolCallInfo] = []

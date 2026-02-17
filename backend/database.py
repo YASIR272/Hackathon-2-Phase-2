@@ -13,12 +13,23 @@ else:
     DATABASE_URL = settings.database_url
 
 
+def _build_engine_kwargs(url: str) -> dict:
+    """Build engine kwargs based on database type."""
+    kwargs = {
+        "echo": False,  # Set to True to see SQL queries for debugging
+    }
+    if "sqlite" in url:
+        kwargs["connect_args"] = {"check_same_thread": False}
+    else:
+        # PostgreSQL (Neon) connection pooling configuration
+        kwargs["pool_size"] = 5
+        kwargs["max_overflow"] = 10
+        kwargs["pool_pre_ping"] = True  # Verify connections before use (Neon cold start resilience)
+    return kwargs
+
+
 # Create the database engine
-engine = create_engine(
-    DATABASE_URL,
-    echo=False,  # Set to True to see SQL queries for debugging
-    connect_args={"check_same_thread": False} if "sqlite" in DATABASE_URL else {}
-)
+engine = create_engine(DATABASE_URL, **_build_engine_kwargs(DATABASE_URL))
 
 
 def get_session() -> Generator[Session, None, None]:
