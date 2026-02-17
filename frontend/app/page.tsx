@@ -24,6 +24,11 @@ export default function HomePage() {
               <Link href="/signup">Sign Up</Link>
             </Button>
           </div>
+          <div className="mt-6">
+            <Button variant="ghost" asChild>
+              <Link href="/chat">Or try the AI Chat Assistant →</Link>
+            </Button>
+          </div>
         </div>
       </main>
     </div>

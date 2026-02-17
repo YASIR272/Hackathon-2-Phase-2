@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Moon, Sun } from 'lucide-react';
+import { Moon, Sun, MessageSquare } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useAuth } from '@/lib/simple-auth';
 import { useState, useEffect } from 'react';
@@ -38,6 +38,14 @@ export function BrandingHeader() {
           </Link>
         </div>
         <div className="flex items-center gap-2">
+          {user && (
+            <Button variant="ghost" size="sm" asChild className="mr-2">
+              <Link href="/chat">
+                <MessageSquare className="h-4 w-4 mr-1" />
+                AI Chat
+              </Link>
+            </Button>
+          )}
           {user && (
             <span className="hidden md:block text-sm font-medium mr-4">
               Welcome, {user.name || user.email}
