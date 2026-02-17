@@ -4,9 +4,11 @@
  * API base URL, auth token retrieval, and ChatKit settings.
  */
 
-// Backend API base URL — proxied through Vite in development
+// Backend API base URL
+// - Development: proxied through Vite to localhost:8000
+// - Production (Vercel): proxied via vercel.json rewrites, or set VITE_API_BASE_URL
 export const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+  import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? "http://localhost:8000" : "https://yasirali22218-hackathon-ii-phase-ii.hf.space");
 
 // Get auth token from localStorage (set by the Phase I/II frontend login flow)
 export function getAuthToken(): string | null {
